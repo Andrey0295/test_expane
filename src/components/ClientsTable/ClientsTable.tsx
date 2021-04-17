@@ -1,5 +1,4 @@
 import React from 'react';
-import AddButton from '../AddButton';
 
 const ClientsTable: React.FC = () => {
   return (
@@ -34,7 +33,6 @@ const ClientsTable: React.FC = () => {
           </tr>
         </tbody>
       </table>
-      <AddButton />
     </div>
   );
 };
