@@ -1,13 +1,12 @@
 import React from 'react';
+import ClientsTable from './components/ClientsTable/ClientsTable';
 
-
-function App() {
+const App: React.FC = () => {
   return (
-    <div >
-      <h1>Hello Typescript</h1>
-      
+    <div>
+      <ClientsTable />
     </div>
   );
-}
+};
 
 export default App;
