@@ -1,8 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const AddClientsForm: React.FC = () => {
+type FormProps = {
+  onSubmit: (users: Object) => any;
+};
+
+const AddClientsForm: React.FC<FormProps> = ({ onSubmit }) => {
+  const [name, setName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+
+  const updateName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+    console.log(e.currentTarget.name);
+  };
+
+  const updateLastName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLastName(e.target.value);
+    console.log(e.currentTarget.name);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const user = {
+      name: name,
+      lastName: lastName,
+    };
+
+    onSubmit(user);
+
+    setName('');
+    setLastName('');
+  };
   return (
-    <form className="flex flex-col p-16">
+    <form className="flex flex-col p-16" onSubmit={handleSubmit}>
       <div className="mb-4">
         <label htmlFor="123"></label>
         <input
@@ -10,9 +39,9 @@ const AddClientsForm: React.FC = () => {
           id="123"
           type="text"
           name="name"
-          value=""
+          value={name}
           placeholder="Name"
-          // onChange={this.onInputChange}
+          onChange={updateName}
         />
       </div>
       <div className="mb-4">
@@ -22,9 +51,9 @@ const AddClientsForm: React.FC = () => {
           id="124"
           type="text"
           name="last name"
-          value=""
+          value={lastName}
           placeholder="Last Name"
-          // onChange={this.onInputChange}
+          onChange={updateLastName}
         />
       </div>
       <button

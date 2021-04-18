@@ -8,7 +8,6 @@ type ModalProps = {
 
 const AddClientsModal: React.FC<ModalProps> = ({ onClose, children }) => {
   useEffect(() => {
-    console.log('Модалка зарендерилась');
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);

@@ -5,6 +5,17 @@ import AddClientsForm from './components/AddClientsForm';
 
 const App: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [clients, setClients] = useState<any>([]);
+
+  const handleClientsData = (data: any) => {
+    // console.log(data);
+    const client = {
+      name: data.name,
+      lastName: data.lastName,
+    };
+    setClients([...clients, client]);
+    console.log(clients);
+  };
 
   const toggleMOdal = () => {
     setShowModal(!showModal);
@@ -23,7 +34,7 @@ const App: React.FC = () => {
       </button>
       {showModal ? (
         <AddClientsModal onClose={toggleMOdal}>
-          <AddClientsForm />
+          <AddClientsForm onSubmit={handleClientsData} />
         </AddClientsModal>
       ) : null}
     </div>
