@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 
 type ModalProps = {
-  onClose(e: EventListener): any;
+  onClose(e: EventListener): void;
   children: {};
 };
 

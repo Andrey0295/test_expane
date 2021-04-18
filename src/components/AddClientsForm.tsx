@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 
+interface IClient {
+  name: string;
+  lastName: string;
+}
+
 type FormProps = {
-  onSubmit: (users: Object) => any;
+  onSubmit: (client: IClient) => any;
 };
 
 const AddClientsForm: React.FC<FormProps> = ({ onSubmit }) => {
@@ -20,12 +25,12 @@ const AddClientsForm: React.FC<FormProps> = ({ onSubmit }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const user = {
+    const client = {
       name: name,
       lastName: lastName,
     };
 
-    onSubmit(user);
+    onSubmit(client);
 
     setName('');
     setLastName('');

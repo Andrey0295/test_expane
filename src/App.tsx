@@ -3,12 +3,16 @@ import ClientsTable from './components/ClientsTable/ClientsTable';
 import AddClientsModal from './components/AddClientsModal';
 import AddClientsForm from './components/AddClientsForm';
 
+interface Data {
+  name: string;
+  lastName: string;
+}
+
 const App: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [clients, setClients] = useState<any>([]);
 
-  const handleClientsData = (data: any) => {
-    // console.log(data);
+  const handleClientsData = (data: Data) => {
     const client = {
       name: data.name,
       lastName: data.lastName,
