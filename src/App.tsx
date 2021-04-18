@@ -1,19 +1,31 @@
 import React, { useState } from 'react';
 import ClientsTable from './components/ClientsTable/ClientsTable';
-import ClientsEditorModal from './components/ClientsEditorModal';
-import AddButton from './components/AddButton';
+import AddClientsModal from './components/AddClientsModal';
+import AddClientsForm from './components/AddClientsForm';
 
 const App: React.FC = () => {
-  let [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
-  const openModal = () => {
-    setShowModal((showModal = true));
+  const toggleMOdal = () => {
+    setShowModal(!showModal);
   };
+
   return (
     <div>
       <ClientsTable />
-      <AddButton onClick={openModal} />
-      {showModal ? <ClientsEditorModal /> : null}
+
+      <button
+        className="w-28 h-8 rounded bg-indigo-700 text-white hover:bg-blue-500 focus:bg-blue-500"
+        type="button"
+        onClick={toggleMOdal}
+      >
+        AddClient
+      </button>
+      {showModal ? (
+        <AddClientsModal onClose={toggleMOdal}>
+          <AddClientsForm />
+        </AddClientsModal>
+      ) : null}
     </div>
   );
 };
