@@ -3,32 +3,74 @@ import ClientsTable from './components/ClientsTable/ClientsTable';
 import AddClientsModal from './components/AddClientsModal';
 import AddClientsForm from './components/AddClientsForm';
 
+import gql from 'graphql-tag';
+
+import { useQuery, useMutation } from 'react-query';
+import { request } from 'graphql-request';
+
+const GET_CLIENTS = gql`
+  query {
+    getClients {
+      id
+      firstName
+      lastName
+      phone
+      avatarUrl
+    }
+  }
+`;
+
+const ADD_CLIENT = gql`
+  mutation {
+    addClient {
+      firstName
+      lastName
+      phone
+      avatarUrl
+    }
+  }
+`;
+
 interface Data {
   name: string;
   lastName: string;
 }
+const endpoint = 'https://test-task.expane.pro/api/graphql';
+const fetchData = async () => await request(endpoint, GET_CLIENTS);
+const add = async () => await request(endpoint, ADD_CLIENT);
 
 const App: React.FC = () => {
+  const clientsData = useQuery('clients', fetchData);
+  const { mutate } = useMutation(add);
+
+  if (!clientsData.isLoading) {
+    console.log(clientsData.data);
+  }
+
   const [showModal, setShowModal] = useState<boolean>(false);
   const [clients, setClients] = useState<any>([]);
+  mutate(clients);
 
   const handleClientsData = (data: Data) => {
     const client = {
       name: data.name,
       lastName: data.lastName,
     };
+
     setClients([...clients, client]);
-    console.log(clients);
   };
 
   const toggleMOdal = () => {
     setShowModal(!showModal);
   };
+  if (clientsData.isLoading) return <div>Loading</div>;
+  if (clientsData.error) return <div>Error</div>;
 
   return (
     <div>
-      <ClientsTable />
-
+      {!clientsData.isLoading && (
+        <ClientsTable allClients={clientsData.data.getClients} />
+      )}
       <button
         className="w-28 h-8 rounded bg-indigo-700 text-white hover:bg-blue-500 focus:bg-blue-500"
         type="button"
