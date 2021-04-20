@@ -5,7 +5,7 @@ import AddClientsForm from './components/AddClientsForm';
 
 import gql from 'graphql-tag';
 
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, QueryClient } from 'react-query';
 import { request } from 'graphql-request';
 
 const GET_CLIENTS = gql`
@@ -21,8 +21,8 @@ const GET_CLIENTS = gql`
 `;
 
 const ADD_CLIENT = gql`
-  mutation {
-    addClient {
+  mutation($firstName: String, $lastName: String) {
+    addClient(firstName: $firstname, lastName: $lastName) {
       firstName
       lastName
       phone
@@ -32,16 +32,18 @@ const ADD_CLIENT = gql`
 `;
 
 interface Data {
-  name: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  avatarUrl?: string;
 }
 const endpoint = 'https://test-task.expane.pro/api/graphql';
 const fetchData = async () => await request(endpoint, GET_CLIENTS);
-const add = async () => await request(endpoint, ADD_CLIENT);
+// const add = async () => await request(endpoint, ADD_CLIENT);
 
 const App: React.FC = () => {
   const clientsData = useQuery('clients', fetchData);
-  const { mutate } = useMutation(add);
+  // const mutation = useMutation(add);
 
   if (!clientsData.isLoading) {
     console.log(clientsData.data);
@@ -49,12 +51,13 @@ const App: React.FC = () => {
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [clients, setClients] = useState<any>([]);
-  mutate(clients);
 
   const handleClientsData = (data: Data) => {
-    const client = {
-      name: data.name,
+    const client: any = {
+      firstName: data.firstName,
       lastName: data.lastName,
+      phone: data.phone,
+      avatarUrl: data.avatarUrl,
     };
 
     setClients([...clients, client]);
